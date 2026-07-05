@@ -1,4 +1,5 @@
 const readline = require("readline");
+const fs = require("fs");
 
 // Mood recommendations
 const playlists = {
@@ -54,5 +55,20 @@ rl.question("What's your mood today? ", (answer) => {
     console.log(`🚶 Activity: ${recommendation.activity}`);
     console.log(`💬 Message: ${recommendation.message}`);
 
-    rl.close();
+    // Create a timestamp
+    const timestamp = new Date().toLocaleString();
+
+    // Format the history entry
+    const historyEntry = `${timestamp} - ${mood}\n`;
+
+    // Save to mood-history.txt
+    fs.appendFile("mood-history.txt", historyEntry, (err) => {
+        if (err) {
+            console.log("❌ Error saving mood history.");
+        } else {
+            console.log("\n✅ Mood saved to mood-history.txt");
+        }
+
+        rl.close();
+    });
 });
