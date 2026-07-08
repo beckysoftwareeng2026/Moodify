@@ -10,15 +10,10 @@ moodCards.forEach((card) => {
         card.classList.add("selected");
 
         selectedMood = card.querySelector("span").textContent.trim().toLowerCase();
-
-        console.log("Selected mood:", selectedMood);
     });
 });
 
 recommendBtn.addEventListener("click", async () => {
-    console.log("Button clicked");
-    console.log("Mood sent to server:", selectedMood);
-
     if (!selectedMood) {
         result.innerHTML = `
       <h2>Choose a mood first</h2>
@@ -27,11 +22,19 @@ recommendBtn.addEventListener("click", async () => {
         return;
     }
 
+    result.innerHTML = `
+    <h2>Finding your vibe...</h2>
+    <p>🎧 Matching your mood to the right recommendation.</p>
+  `;
+
+    recommendBtn.disabled = true;
+    recommendBtn.textContent = "Loading...";
+
     try {
+        await new Promise((resolve) => setTimeout(resolve, 700));
+
         const response = await fetch(`/recommend?mood=${selectedMood}`);
         const recommendation = await response.json();
-
-        console.log("Server response:", recommendation);
 
         if (!response.ok) {
             throw new Error(recommendation.error || "Mood not found");
@@ -39,15 +42,27 @@ recommendBtn.addEventListener("click", async () => {
 
         result.innerHTML = `
       <h2>Your Recommendation</h2>
-      <p><strong>Mood:</strong> ${selectedMood}</p>
-      <p><strong>🎧 Playlist:</strong> ${recommendation.playlist}</p>
-      <p><strong>🚶 Activity:</strong> ${recommendation.activity}</p>
-      <p><strong>💬 Message:</strong> ${recommendation.message}</p>
+      <div class="recommendation-card">
+        <p class="label">Mood</p>
+        <p class="value">${selectedMood}</p>
+
+        <p class="label">🎧 Playlist</p>
+        <p class="value">${recommendation.playlist}</p>
+
+        <p class="label">🚶 Activity</p>
+        <p class="value">${recommendation.activity}</p>
+
+        <p class="label">💬 Message</p>
+        <p class="value">${recommendation.message}</p>
+      </div>
     `;
     } catch (error) {
         result.innerHTML = `
       <h2>Something went wrong</h2>
       <p>${error.message}</p>
     `;
+    } finally {
+        recommendBtn.disabled = false;
+        recommendBtn.textContent = "Get Recommendation";
     }
 });

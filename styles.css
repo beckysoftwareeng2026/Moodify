@@ -148,3 +148,25 @@ h1 {
 .mood-card.selected span {
   color: white;
 }
+.recommend-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.recommendation-card {
+  background: #f7f3ff;
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.label {
+  color: #6d28d9;
+  font-weight: 700;
+  margin-top: 18px;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 20px;
+  color: #222;
+}
