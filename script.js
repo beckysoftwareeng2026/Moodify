@@ -1,6 +1,7 @@
 const moodCards = document.querySelectorAll(".mood-card");
 const recommendBtn = document.querySelector(".recommend-btn");
 const result = document.querySelector(".result");
+const selectionStatus = document.querySelector("#selection-status");
 
 let selectedMood = "";
 
@@ -9,33 +10,42 @@ moodCards.forEach((card) => {
     moodCards.forEach((item) => item.classList.remove("selected"));
     card.classList.add("selected");
 
-    selectedMood = card
-      .querySelector("span")
-      .textContent
-      .trim()
-      .toLowerCase();
+    selectedMood = card.dataset.mood;
+
+    selectionStatus.textContent = `${selectedMood.charAt(0).toUpperCase() + selectedMood.slice(1)
+      } selected`;
   });
 });
 
 recommendBtn.addEventListener("click", async () => {
   if (!selectedMood) {
     result.innerHTML = `
-      <h2>Choose a mood first</h2>
-      <p>Please select how you're feeling before getting a recommendation.</p>
+      <div class="error-state">
+        <h2>Choose a mood first</h2>
+        <p>Select how you are feeling before requesting a recommendation.</p>
+      </div>
     `;
     return;
   }
 
   result.innerHTML = `
-    <h2>Finding your vibe...</h2>
-    <p>🎧 Matching your mood to the right recommendation.</p>
+    <div class="loading-state">
+      <h2>Finding your vibe</h2>
+      <p>Matching your mood to the right recommendation.</p>
+
+      <div aria-label="Loading">
+        <span class="loading-dot"></span>
+        <span class="loading-dot"></span>
+        <span class="loading-dot"></span>
+      </div>
+    </div>
   `;
 
   recommendBtn.disabled = true;
-  recommendBtn.textContent = "Loading...";
+  recommendBtn.textContent = "Finding your vibe...";
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 650));
 
     const response = await fetch("/recommend", {
       method: "POST",
@@ -54,29 +64,37 @@ recommendBtn.addEventListener("click", async () => {
     }
 
     result.innerHTML = `
-      <h2>Your Recommendation</h2>
-
       <div class="recommendation-card">
-        <p class="label">Mood</p>
-        <p class="value">${selectedMood}</p>
+        <article class="recommendation-item">
+          <p class="label">Selected mood</p>
+          <p class="value mood-value">${selectedMood}</p>
+        </article>
 
-        <p class="label">🎧 Playlist</p>
-        <p class="value">${recommendation.playlist}</p>
+        <article class="recommendation-item">
+          <p class="label">Playlist</p>
+          <p class="value">🎧 ${recommendation.playlist}</p>
+        </article>
 
-        <p class="label">🚶 Activity</p>
-        <p class="value">${recommendation.activity}</p>
+        <article class="recommendation-item">
+          <p class="label">Activity</p>
+          <p class="value">🚶 ${recommendation.activity}</p>
+        </article>
 
-        <p class="label">💬 Message</p>
-        <p class="value">${recommendation.message}</p>
+        <article class="recommendation-item message-item">
+          <p class="label">A message for you</p>
+          <p class="value">💬 ${recommendation.message}</p>
+        </article>
       </div>
     `;
   } catch (error) {
     result.innerHTML = `
-      <h2>Something went wrong</h2>
-      <p>${error.message}</p>
+      <div class="error-state">
+        <h2>Something went wrong</h2>
+        <p>${error.message}</p>
+      </div>
     `;
   } finally {
     recommendBtn.disabled = false;
-    recommendBtn.textContent = "Get Recommendation";
+    recommendBtn.textContent = "Get my recommendation";
   }
 });

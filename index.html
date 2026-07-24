@@ -1,54 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Moodify</title>
+        <meta
+            name="description"
+            content="Moodify matches your mood with a playlist, activity, and encouraging message." />
+
+        <title>Moodify | Your mood, your music</title>
 
         <link rel="stylesheet" href="/styles.css" />
     </head>
 
     <body>
+        <main class="app-shell">
+            <header class="hero">
+                <div class="brand-mark" aria-hidden="true">♫</div>
 
-        <main>
+                <p class="eyebrow">Mood-based music discovery</p>
 
-            <h1>🎵 Moodify</h1>
+                <h1>Moodify</h1>
 
-            <p class="subtitle">
-                Discover the perfect playlist based on your mood.
-            </p>
+                <p class="subtitle">
+                    Choose how you feel and get a playlist, activity, and
+                    message matched
+                    to your mood.
+                </p>
+            </header>
 
-            <div class="mood-grid">
+            <section class="mood-section" aria-labelledby="mood-heading">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-label">Step 1</p>
+                        <h2 id="mood-heading">How are you feeling?</h2>
+                    </div>
 
-                <button class="mood-card">😊 <span>Happy</span></button>
-                <button class="mood-card">😌 <span>Calm</span></button>
-                <button class="mood-card">💪 <span>Energetic</span></button>
-                <button class="mood-card">😴 <span>Tired</span></button>
-                <button class="mood-card">😢 <span>Sad</span></button>
-                <button class="mood-card">❤️ <span>Romantic</span></button>
+                    <p class="selection-status" id="selection-status">
+                        No mood selected
+                    </p>
+                </div>
 
-            </div>
+                <div class="mood-grid">
+                    <button class="mood-card" type="button" data-mood="happy">
+                        <span class="mood-emoji" aria-hidden="true">😊</span>
+                        <span>Happy</span>
+                    </button>
 
-            <button class="recommend-btn">
-                Get Recommendation
-            </button>
+                    <button class="mood-card" type="button" data-mood="calm">
+                        <span class="mood-emoji" aria-hidden="true">😌</span>
+                        <span>Calm</span>
+                    </button>
 
-            <div class="result">
+                    <button class="mood-card" type="button"
+                        data-mood="energetic">
+                        <span class="mood-emoji" aria-hidden="true">💪</span>
+                        <span>Energetic</span>
+                    </button>
 
-                <h2>Your Recommendation</h2>
+                    <button class="mood-card" type="button" data-mood="tired">
+                        <span class="mood-emoji" aria-hidden="true">😴</span>
+                        <span>Tired</span>
+                    </button>
 
-                <p><strong>Playlist:</strong> --</p>
-                <p><strong>Activity:</strong> --</p>
-                <p><strong>Message:</strong> --</p>
+                    <button class="mood-card" type="button" data-mood="sad">
+                        <span class="mood-emoji" aria-hidden="true">😢</span>
+                        <span>Sad</span>
+                    </button>
 
-            </div>
+                    <button class="mood-card" type="button"
+                        data-mood="romantic">
+                        <span class="mood-emoji" aria-hidden="true">❤️</span>
+                        <span>Romantic</span>
+                    </button>
+                </div>
 
+                <button class="recommend-btn" type="button">
+                    Get my recommendation
+                </button>
+            </section>
+
+            <section
+                class="result"
+                aria-live="polite"
+                aria-labelledby="result-heading">
+                <div class="result-placeholder">
+                    <span class="placeholder-icon" aria-hidden="true">🎧</span>
+                    <h2 id="result-heading">Your recommendation will appear
+                        here</h2>
+                    <p>Select a mood above to get started.</p>
+                </div>
+            </section>
+
+            <footer>
+                <p>Built with Node.js, native HTTP, HTML, CSS, and
+                    JavaScript.</p>
+            </footer>
         </main>
 
         <script src="/script.js"></script>
-
     </body>
-
 </html>

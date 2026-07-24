@@ -3,7 +3,7 @@ const fs = require("fs");
 const playlists = require("./moods");
 const saveMood = require("./history");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
     // Serve HTML
@@ -138,6 +138,6 @@ const server = http.createServer((req, res) => {
     res.end("Page not found");
 });
 
-server.listen(PORT, () => {
-    console.log(`Moodify server running at http://localhost:${PORT}`);
+server.listen(PORT, "0.0.0.0", () => {
+    console.log(`Moodify server running on port ${PORT}`);
 });
