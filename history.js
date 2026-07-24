@@ -1,15 +1,19 @@
 const fs = require("fs");
 
-function saveMood(mood) {
+
+function saveMood(mood, callback) {
     const timestamp = new Date().toLocaleString();
     const historyEntry = `${timestamp} - ${mood}\n`;
 
-    fs.appendFile("mood-history.txt", historyEntry, (err) => {
-        if (err) {
-            console.log("❌ Error saving mood history.");
-        } else {
-            console.log("\n✅ Mood saved to mood-history.txt");
+    fs.appendFile("mood-history.txt", historyEntry, (error) => {
+        if (error) {
+            console.error("Error saving mood history:", error);
+            callback(error);
+            return;
         }
+
+        console.log(`Mood saved: ${mood}`);
+        callback(null);
     });
 }
 
